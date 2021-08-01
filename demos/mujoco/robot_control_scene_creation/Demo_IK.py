@@ -10,8 +10,8 @@ if __name__ == '__main__':
     object_list = [box]
     duration = 4
     # Setup the scene
-    # ctrl = mj_ctrl.IKControl()# torque control
-    ctrl = mj_ctrl.MocapControl()  # mocap control
+    ctrl = mj_ctrl.IKControl()# torque control
+    # ctrl = mj_ctrl.MocapControl()  # mocap control
     scene = Scene(object_list=object_list, control=ctrl)  # mocap control
 
     mj_Robot = MujocoRobot(scene, gravity_comp=True, num_DoF=7)

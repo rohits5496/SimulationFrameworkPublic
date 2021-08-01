@@ -12,10 +12,10 @@ from classic_framework.utils.sim_path import sim_framework_path
 
 
 class MujocoRobot(RobotBase):
-    def __init__(self, scene, config_path=None, gravity_comp=True, clip_actions=False, num_DoF=7):
+    def __init__(self, scene, config_path=None, gravity_comp=True, clip_actions=False, num_DoF=7, use_inv_dyn=False):
         if config_path is None:
             config_path = sim_framework_path('./classic_framework/controllers/Config/Mujoco/Standard')
-        super(MujocoRobot, self).__init__(config_path, num_DoF=num_DoF, dt=scene.dt)
+        super(MujocoRobot, self).__init__(config_path, num_DoF=num_DoF, dt=scene.dt, use_inv_dyn=use_inv_dyn)
 
         self.scene = scene
         self.control_mode = self.scene.control.ctrl_name
@@ -150,13 +150,16 @@ class MujocoRobot(RobotBase):
         self.current_fing_pos = [self.sim.data.get_joint_qpos(j_name) for j_name in self.scene.gripper_names]
         self.current_fing_vel = [self.sim.data.get_joint_qvel(j_name) for j_name in self.scene.gripper_names]
         self.gripper_width = self.current_fing_pos[-2] + self.current_fing_pos[-1]
-
+        
         # self.des_joint_pos = np.zeros((self.num_DoF,)) * np.nan
         # self.des_joint_vel = np.zeros((self.num_DoF,)) * np.nan
         # self.des_joint_acc = np.zeros((self.num_DoF,)) * np.nan
 
     def get_command_from_inverse_dynamics(self, target_j_acc, mj_calc_inv=False):
+        # print("Called INV DYN ! ")
+        # print("cal_inv value is : ",mj_calc_inv)
         if mj_calc_inv:
+            
             self.sim.data.qacc[:target_j_acc.shape[0]] = target_j_acc
             self.functions.mj_inverse(self.model, self.sim.data)
             return self.sim.data.qfrc_inverse[:9]  # 9 since we have 2 actuations on the fingers

@@ -185,6 +185,7 @@ class RobotLogger(LoggerBase):
 
         # commands and forces
         self.uff_list.append(robot.uff.copy())
+
         self.last_cmd_list.append(robot.last_cmd)
         self.time_stamp_list.append(robot.time_stamp)
         self.command_list.append(robot.command)

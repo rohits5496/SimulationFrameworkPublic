@@ -10,7 +10,7 @@ class RobotBase:
     This class implements a physics-engine independent robot base class.
     """
 
-    def __init__(self, config_path, dt, num_DoF=7):
+    def __init__(self, config_path, dt, num_DoF=7, use_inv_dyn = False):
         """
         Init of the robot params.
 
@@ -18,7 +18,9 @@ class RobotBase:
         :param num_DoF: number of degrees of freedom
         """
         self.config = Config(config_path)
-        self.use_inv_dyn = False
+        self.use_inv_dyn = use_inv_dyn
+        # self.use_inv_dyn = False
+
         self.gravity_comp = True
         self.clip_rate = False
 
